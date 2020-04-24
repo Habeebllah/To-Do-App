@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for item in todo_item %}
+        <div class="row mt-1">
+            <div class="col">
+                <ul class="list-group">
+                    <li class="list-group-item ">
+                        {{item | title}}
+                            <!-- Button HTML (to Trigger Modal) -->
+                            <a href="#myModal" class="trigger-btn float-right" data-toggle="modal" >
+                                <button class="btn btn-sm btn-danger" type="submit" name="action">DELETE</button>
+                            </a>
+
+                        <!-- Modal HTML -->
+                        <div id="myModal" class="modal fade">
+                            <div class="modal-dialog modal-confirm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="icon-box">
+                                            <i class="material-icons">delete_forever</i>
+                                        </div>
+                                        <h4 class="modal-title" style="font-family: Lucida Fax; font-size: 20px;">Confirm Delete</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info" data-dismiss="modal"><strong>Cancel</strong></button>
+                                        <a href="{% url 'delete_item' item.id %}">
+                                            <button type="button" class="btn btn-danger"><strong>Delete</strong></button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+
+
+{% endblock content%}
