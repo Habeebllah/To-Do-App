@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+            <nav class="navbar navbar-dark bg-dark">
+                <a class="navbar-brand" href="/" style="font-family: Stencil; font-size: 30px;">TO DO APP</a>
+
+                <div class="navbar-brand">Hello, {{request.user}}|  <a href="{% url 'logout' %}" style="color: slyblue; text-decoration: none; hover: white"> Logout</a></div>
+            </nav>
+
+        <div class="container">
+
+
+            <div class="row mt-4 mb-3">
+                <div class="col">
+
+                    <h2 style="font-family: Impact; font-size: 30px;">UPDATE ITEM</h2>
+                    <form action="" method="post" class="form-inline">
+                        {% csrf_token %}
+                        <input type="text" name="text" value='' class="form-control mb-2 mr-sm-2" maxlength="500" required id="id_text">
+                        <button class="btn btn-primary mb-2" type="submit" name="action">Submit</button>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row mt-2 mb-2">
+                <div class="col">
+                    <h4 style="font-family: Impact;">MY TO DO LIST</h4>
+                </div>
+            </div>
+        {% if not todo_item %}
+
+            <div class="row mt-2 mb-2">
+                <div class="col">
+                    <h4 style="font-family: Impact;">NO ITEM FOR NOW</h4>
+                </div>
+            </div>
+
+        {% else %}
+            {% for item in todo_item %}
+                <div class="row mt-1">
+                    <div class="col">
+                        <ul class="list-group">
+                            <li class="list-group-item ">
+                                {{ item.text| title }} | <b>Time Posted:</b> {{ item.created_at|naturaltime }} | <b>Time Updated:</b> {{ item.updated_at|naturaltime }}
+                                    <!-- Button HTML (to Trigger Modal) -->
+
+
+                                <a href="#myModal" class="trigger-btn float-right" data-toggle="modal" >
+                                    <button class="btn btn-sm btn-danger" type="submit" name="action">DELETE</button>
+                                </a>
+
+                                <a href="{% url 'edititem' item.id %}" class="float-right">
+                                    <button class="btn btn-sm mr-2 btn-primary" type="submit" name="action">UPDATE</button>
+                                </a>
+
+                                <!-- Modal HTML -->
+                                <div id="myModal" class="modal fade">
+                                    <div class="modal-dialog modal-confirm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="icon-box">
+                                                    <i class="large material-icons">delete_forever</i>
+                                                </div>
+                                                <h4 class="modal-title" style="font-family: Lucida Fax; font-size: 20px;">Confirm Delete</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-info" data-dismiss="modal"><strong>Cancel</strong></button>
+                                                <a href="{% url 'delete_item' item.id %}">
+                                                    <button type="button" class="btn btn-danger"><strong>Delete</strong></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+{% endblock content%}
+
